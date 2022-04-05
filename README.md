@@ -30,4 +30,4 @@
 12. Run `chown -R postgres:postgres tmp/db/`
 13. Run `docker-compose up`
 14. In another terminal run: `docker-compose run web rake db:create`
-15. Check [localhost:3000’](localhost:3000’)
+15. Check [localhost:3000](http://localhost:3000)
