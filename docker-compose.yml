@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+  db:
+    image: postgres
+    volumes:
+      - /home/bweber/ruby/rails/myapp/tmp/db:/var/lib/postgresql/data:z
+    user: postgres:postgres
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+  web:
+    build: .
+    image: myapp_web
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - /home/bweber/ruby/rails/myapp:/myapp
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
