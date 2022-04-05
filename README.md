@@ -16,7 +16,7 @@
 2. Clone this repo or download the files.
 3. Create an application directory. In this case we chose `/your_home/myapp`. Adjust [docker-compose.yml](docker-compose.yml) accordingly.
 4. Copy [Gemfile](Gemfile) and [Gemfile.lock](Gemfile.lock) into that directory.
-5. Make sure [Gemfile.Lock](Gemfile.lock) is writable: `chmod a+w Gemfile.lock`
+5. Make sure [Gemfile.lock](Gemfile.lock) is writable: `chmod a+w Gemfile.lock`
 6. Run `docker-compose run --no-deps web rails new . --force --database=postgresql`
 7. Run `sudo chown -R $USER:$USER /your_home/myapp`
 8. Run `docker-compose build`
