@@ -26,8 +26,8 @@
 	  - `sudo adduser --no-create-home --uid 999 --gid 999 --disabled-password --disabled-login postgres`
 	  - `sudo vim /etc/password`
 		  - Change postgres user shell to: `/usr/sbin/nologin`
-11. Run `mkdir myapp/tmp/db’`
-12. Run `chown -R postgres:postgres tmp/db/`
+11. Run `mkdir myapp/tmp/db`
+12. Run `sudo chown -R postgres:postgres myapp/tmp/db`
 13. Run `docker-compose up`
 14. In another terminal run: `docker-compose run web rake db:create`
 15. Check [localhost:3000](http://localhost:3000)
