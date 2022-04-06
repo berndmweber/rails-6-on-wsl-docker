@@ -42,5 +42,5 @@
 13. Change `config.file_watcher = ActiveSupport::EventedFileUpdateChecker` to `config.file_watcher = ActiveSupport::FileUpdateChecker` in `/your_home/myapp/config/environments/development.rb`
     - This ensures the webview updates properly when there is a change
 14. Run `docker-compose up`
-15. In another terminal run: `docker-compose run web rake db:create`
+15. In another terminal run: `docker-compose run --rm web rake db:create`
 16. Check [localhost:3000](http://localhost:3000)
