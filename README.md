@@ -1,4 +1,4 @@
-# Prerequisistes
+# Prerequisites
 - Tested on Windows 11 but should work on Windows 10 as well
 - WSL2 installed: [Microsoft Docs](https://docs.microsoft.com/en-us/windows/wsl/install)
 - Ubuntu 20.04 installed on WSL
@@ -7,7 +7,7 @@
 
 # Installation Instructions
 
-1. To avoid later aithentication and other issues ensure your `/etc/wsl.conf` has the configuration options in [wsl.conf](wsl.conf).
+1. To avoid later authentication and other issues ensure your `/etc/wsl.conf` has the configuration options in [wsl.conf](wsl.conf).
    - If it didn't and you updated the file:
      - close the Ubuntu Terminal
      - Open a Powershell with Admin rights
