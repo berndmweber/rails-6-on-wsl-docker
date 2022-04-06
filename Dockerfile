@@ -1,22 +1,22 @@
-FROM ruby:latest
+FROM ruby:3.1.1
 
-ENV APP_PATH /myapp
+ENV APP_PATH /rails_app
 ENV RAILS_LOG_TO_STDOUT true
 ENV RAILS_PORT 3000
 
-RUN apt update && apt install -y curl git nodejs npm gcc make libssl-dev libreadline-dev zlib1g-dev g++ libpq-dev postgresql-client
+RUN apt update && apt install -y curl git nodejs npm postgresql-client
 
-# RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" >> /etc/apt/sources.list.d/yarn.list
-# RUN apt update && apt install -y yarn
+# Install Yarn
 RUN npm install --global yarn
 RUN yarn install --check-files
 
 # navigate to app directory
 WORKDIR $APP_PATH
 
-COPY Gemfile /myapp/Gemfile
-COPY Gemfile.lock /myapp/Gemfile.lock
-RUN bundle install
+# Install Rails app
+COPY Gemfile $APP_PATH/Gemfile
+COPY Gemfile.lock $APP_PATH/Gemfile.lock
+RUN bundle check || bundle install --jobs 20 --retry 5
 
 # Add a script to be executed every time the container starts.
 COPY entrypoint.sh /usr/bin/
