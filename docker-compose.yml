@@ -1,20 +1,24 @@
 version: "3.9"
 services:
   db:
-    image: postgres
+    image: postgres:14.2
     volumes:
-      - /your_home/myapp/tmp/db:/var/lib/postgresql/data:z
+      - ${BASE_PATH}/${APP_NAME}/tmp/db:/var/lib/postgresql/data:z
     user: postgres:postgres
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: postgres
   web:
-    build: .
-    image: myapp_web
+    build:
+      context: .
+    image: rails_web
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     volumes:
-      - /your_home/myapp:/myapp
+      - ${BASE_PATH}/${APP_NAME}:/rails_app
     ports:
       - "3000:3000"
+    environment:
+      TZ: America/Los_Angeles
+      APP_NAME: ${APP_NAME}
     depends_on:
       - db
