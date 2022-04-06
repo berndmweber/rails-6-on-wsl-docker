@@ -20,6 +20,17 @@
 6. Run `docker-compose run --no-deps web rails new . --force --database=postgresql`
 7. Run `sudo chown -R $USER:$USER /your_home/myapp`
 8. Run `docker-compose build`
+   - Note: There is a chance that the `bundle install` somehow doesn't save all the installed gems in the container. In that case manually update the container again:
+     - `docker run -it -v /your_home/myapp:/myapp myapp_web /bin/bash`
+     - `bundle check || bundle install --jobs 20 --retry 5`
+     - `exit`
+     - `docker tag myapp_web:latest myapp_web:old`
+     - `docker container ls -a`
+     - Note the ID of the last docker container
+     - `docker commit <that container ID>`
+     - `docker image ls`
+     - Note the new Image ID
+     - `docker tag <that image ID> myapp_web:latest`
 9. Update `config/database.yml` with the [database.yml](database.yml)
 10. Ensure user and group `postgres` exist in your Ubuntu WSL environment. Otherwise:
 	  - `sudo addgroup --gid 999 postgres`
@@ -28,6 +39,8 @@
 		  - Change postgres user shell to: `/usr/sbin/nologin`
 11. Run `mkdir myapp/tmp/db`
 12. Run `sudo chown -R postgres:postgres myapp/tmp/db`
-13. Run `docker-compose up`
-14. In another terminal run: `docker-compose run web rake db:create`
-15. Check [localhost:3000](http://localhost:3000)
+13. Change `config.file_watcher = ActiveSupport::EventedFileUpdateChecker` to `config.file_watcher = ActiveSupport::FileUpdateChecker` in `/your_home/myapp/config/environments/development.rb`
+    - This ensures the webview updates properly when there is a change
+14. Run `docker-compose up`
+15. In another terminal run: `docker-compose run web rake db:create`
+16. Check [localhost:3000](http://localhost:3000)
