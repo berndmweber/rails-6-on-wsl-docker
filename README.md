@@ -17,7 +17,7 @@
 3. Create an application directory. In this case we chose `/your_home/myapp`. Adjust [docker-compose.yml](docker-compose.yml) accordingly.
 4. Copy [Gemfile](Gemfile) and [Gemfile.lock](Gemfile.lock) into that directory.
 5. Make sure [Gemfile.lock](Gemfile.lock) is writable: `chmod a+w Gemfile.lock`
-6. Run `docker-compose run --no-deps web rails new . --force --database=postgresql`
+6. Run `docker-compose run --rm --no-deps web rails new . --force --database=postgresql`
 7. Run `sudo chown -R $USER:$USER /your_home/myapp`
 8. Run `docker-compose build`
    - Note: There is a chance that the `bundle install` somehow doesn't save all the installed gems in the container. In that case manually update the container again:
