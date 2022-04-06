@@ -44,3 +44,9 @@
 14. Run `docker-compose up`
 15. In another terminal run: `docker-compose run --rm web rake db:create`
 16. Check [localhost:3000](http://localhost:3000)
+
+# Acknowledgements
+- https://docs.docker.com/samples/rails/
+- https://betterprogramming.pub/rails-6-development-with-docker-55437314a1ad
+- https://hackernoon.com/installing-ruby-on-rails-6-on-ubuntu-a-how-to-guide-r8b732vn
+- https://guides.rubyonrails.org/v6.0/getting_started.html
