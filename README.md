@@ -42,8 +42,10 @@ The name of the app can be controlled via the `--app-name` parameter for `rails-
 
 The app supports the following operations:
 - `setup`: Just sets up a new application without starting the database.
-- `run`: Runs the applciation. If the application doesn't exist a new one will be created (implied use of setup)
-- `exec`: Execute a command on the rails container. Eg. `rake db:create`
+- `update`: Recreate the web image with the Gemfile from the app that is specified.
+- `up`: Runs the compose application. If the application doesn't exist a new one will be created (implied use of setup). Like `docker-compose up`
+- `run`: Executes a command on the rails container. Like `docker-compose run ...`, eg. `rake db:create`
+- `down`: Powers down the compose application. like `docker compose down`
 - `clean`: Removes an app. Deletes the directory. Not recoverable!
 - `clean-all`: Removes the app and the base image.  Not recoverable!
 
