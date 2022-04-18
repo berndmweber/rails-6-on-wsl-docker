@@ -19,9 +19,11 @@ usage ()
   ${ECHO}
   ${ECHO} " ${cc_blue}<operation> possibilities:${cc_normal}"
   ${ECHO} "  setup                               Initial setup"
-  ${ECHO} "  run                                 Runs the app. If setup wasn't run first it will do that as well if needed."
+  ${ECHO} "  update                              Update gems with new Gemfile"
+  ${ECHO} "  up                                  Runs the app. If setup wasn't run first it will do that as well if needed."
   ${ECHO} "                                      Default operation."
-  ${ECHO} "  exec [op-params]                    Executes a command on the rails container with the given op-params"
+  ${ECHO} "  run [op-params]                     Executes a command on the rails container with the given op-params"
+  ${ECHO} "  down                                Powers down the app"
   ${ECHO} "  clean                               Remove last app"
   ${ECHO} "  clean-all                           Remove all including base image"
   ${ECHO}
@@ -50,8 +52,16 @@ while [ $# -gt 0 ]; do
       OP="setup"
       shift
       ;;
-    run)
-      OP="run"
+    update)
+      OP="update"
+      shift
+      ;;
+    up)
+      OP="up"
+      shift
+      ;;
+    down)
+      OP="down"
       shift
       ;;
     clean)
@@ -62,8 +72,8 @@ while [ $# -gt 0 ]; do
       OP="clean-all"
       shift
       ;;
-    exec)
-      OP="exec"
+    run)
+      OP="run"
       shift
       while [ $# -gt 0 ]; do
         PARAMS="${PARAMS} ${1}"
@@ -169,10 +179,44 @@ run_setup ()
     ${ECHO}
 }
 
+run_update ()
+{
+  ${ECHO} "Updating..."
+  test_base_image
+  if [ $? == 0 ]; then
+    ${ECHO} "Base image \"${BASE_IMAGE_NAME}\" doesn't exist. Run setup instead."
+    exit 0
+  else
+    ${ECHO} "Base image \"${BASE_IMAGE_NAME}\" exists."
+    test_app_exists
+    if [ $? == 0 ]; then
+      ${ECHO} "${APP_NAME} directory doesn't exist. Run setup instead."
+      exit 0
+    else
+      ${ECHO} "${APP_NAME} directory exists."
+      docker container prune -f
+      docker image rm ${BASE_IMAGE_NAME}:latest
+      cp ${APP_NAME}/Gemfile ./
+      cp ${APP_NAME}/Gemfile.lock ./
+      BASE_PATH=${PWD} APP_NAME=${APP_NAME} docker-compose up --force-recreate  --no-start
+    fi
+  fi
+  ${ECHO} "Update done"
+  ${ECHO}
+}
+
 run_app ()
 {
     ${ECHO} "Running App \"${APP_NAME}\""
     BASE_PATH=${PWD} APP_NAME=${APP_NAME} docker-compose up
+    ${ECHO} "\"${APP_NAME}\" done"
+    ${ECHO}
+}
+
+run_down ()
+{
+    ${ECHO} "Downing App \"${APP_NAME}\""
+    BASE_PATH=${PWD} APP_NAME=${APP_NAME} docker-compose down
     ${ECHO} "\"${APP_NAME}\" done"
     ${ECHO}
 }
@@ -182,6 +226,7 @@ run_exec ()
     ${ECHO} "Executing the rails container with \"${PARAMS}\""
     test_app_exists
     if [ $? == 1 ]; then
+      # BASE_PATH=${PWD} APP_NAME=${APP_NAME} docker-compose run --rm --service-ports web ${PARAMS}
       BASE_PATH=${PWD} APP_NAME=${APP_NAME} docker-compose run --rm web ${PARAMS}
     fi
 
@@ -229,12 +274,18 @@ case "${OP}" in
     setup)
         run_setup
     ;;
-    run)
+    update)
+        run_update
+    ;;
+    up)
         run_setup
         run_app
     ;;
-    exec)
+    run)
         run_exec
+    ;;
+    down)
+        run_down
     ;;
     clean)
         run_clean
