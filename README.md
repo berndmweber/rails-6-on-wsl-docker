@@ -31,14 +31,14 @@
 ## Automated version
 
 1. Follow the Initial Setup above
-2. Run `./rails-app.sh --app-name new-app run`
+2. Run `./rails-app.sh --app-name new-app up`
    - This will create the necessary base images and install the containers properly as well as create a new app called "new-app" in the same sub-directory.
    - The script should get you all the way to both containers (web/rails and postgres) running.
-3. Open a second terminal and run `./rails-app.sh --app-name new-app exec rake db:create`
+3. Open a second terminal and run `./rails-app.sh --app-name new-app run rake db:create`
    - This will create the database for the new app.
 4. Check [localhost:3000](http://localhost:3000)
 
-The name of the app can be controlled via the `--app-name` parameter for `rails-app.sh`. This also allows for multiple apps to be kept in parallel as long as they all have a unique name. No simultenous operation of such apps has been tested, so a stack will only ever run for one of the 'apps'.
+The name of the app can be controlled via the `--app-name` parameter for `rails-app.sh`. This also allows for multiple apps to be kept in parallel as long as they all have a unique name. Non simultaneous operation of such apps has been tested, so a stack will only ever run for one of the 'apps'.
 
 The app supports the following operations:
 - `setup`: Just sets up a new application without starting the database.
@@ -48,6 +48,15 @@ The app supports the following operations:
 - `down`: Powers down the compose application. like `docker compose down`
 - `clean`: Removes an app. Deletes the directory. Not recoverable!
 - `clean-all`: Removes the app and the base image.  Not recoverable!
+
+### Updating the gems for your Rails App
+
+This repo has a predefined and small set of gems associated with the Rails Web container to be used with your Rails app. As you develop new gems may need to get added. Follow these instructions:
+1. Modify the `Gemfile` in your app directory to add the gem you need.
+2. Run Your app once to get the gem installed and verified as well as a new `Gemfile.lock` file created. Eg. `./rails-app.sh --app-name new-app up`
+3. Now run `./rails-app.sh --app-name new-app update`. This will copy over the new `Gemfile` and `Gemfile.lock` files, delete the old rails-web image and create an updated version of it.
+4. Run your Rails app normally. `./rails-app.sh --app-name new-app up`
+
 
 ## Manual Version
 
