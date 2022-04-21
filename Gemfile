@@ -50,6 +50,9 @@ group :test do
   gem 'selenium-webdriver', '>= 4.0.0.rc1'
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
+  # The combination of Ruby 3.1 and Rails 6.1 causes problems without the following two lines.
+  gem 'mail', '>= 2.7.1'
+  gem 'net-smtp', require: false
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
