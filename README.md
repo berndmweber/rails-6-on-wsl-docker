@@ -26,7 +26,7 @@
 5. Ensure user and group `postgres` exist with a UID of `999` in your Ubuntu WSL environment. Otherwise the postgres container will have issues creating the database. If it doesn't exist:
    - `sudo addgroup --gid 999 postgres`
    - `sudo adduser --no-create-home --uid 999 --gid 999 --disabled-password --disabled-login postgres`
-   - `sudo vim /etc/password`
+   - `sudo vim /etc/passwd`
      - Change postgres user shell to: `/usr/sbin/nologin`
 
 ## Automated version
