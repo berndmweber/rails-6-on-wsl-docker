@@ -4,6 +4,7 @@
 - Ubuntu 20.04 installed on WSL
 - Docker installed in Ubuntu per: `apt install docker.io docker-compose`
 - Docker Windows desktop installed: [Docker Docs](https://docs.docker.com/desktop/windows/wsl/)
+- dos2unix installed in Ubuntu
 
 # Installation Instructions
 
